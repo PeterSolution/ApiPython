@@ -23,6 +23,8 @@ _registry = {}
 def _load_queries():
     """Załaduj wszystkie query handlery z folderu queries/handlers/"""
     pkg = importlib.import_module("queries.handlers")
+    # modulesInRow = importlib.import_module("queries.handlers.EntriesInRow")
+    # pkg = pkg+modulesInRow <- zrobilem blad to nie dziala, przeniesiona logika podspodem
     for _, name, _ in pkgutil.iter_modules(pkg.__path__):
         try:
             mod = importlib.import_module(f"queries.handlers.{name}")
@@ -31,7 +33,17 @@ def _load_queries():
                 _registry[name] = mod.handle
         except ImportError as e:
             print(f"Nie udało się załadować {name}: {e}")
-
+    # kontynuacja dla EntriesInRow
+    entries_pkg = importlib.import_module("queries.handlers.EntriesInRow")
+    for _, name, _ in pkgutil.iter_modules(entries_pkg.__path__):
+        try:
+            mod = importlib.import_module(f"queries.handlers.EntriesInRow.{name}")
+            print(f"Ładowanie modułu z EntriesInRow: {name}")
+            if hasattr(mod, "handle"):
+                _registry[name] = mod.handle
+        except ImportError as e:
+            print(f"Nie udało się załadować EntriesInRow.{name}: {e}")
+    
 
 _load_queries()
 

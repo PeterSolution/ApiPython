@@ -3,6 +3,7 @@ from flask_cors import CORS
 from models.SqlDB import db
 from routes.userRoutes import user_bp
 from routes.entriesRoutes import entries_bp
+from routes.entriesInRowRoute import entersInRow_bp
 import os
 import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
@@ -10,13 +11,14 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 app = Flask(__name__)
 app.config.from_pyfile('config.py')
 
-CORS(app, resources={r"/*": {"origins": "http://localhost:3000"}}, supports_credentials=True)
+CORS(app, resources={r"/*": {"origins": "http://aivision.local:10623"}}, supports_credentials=True)
 
 db.init_app(app)  # powiązanie SQLAlchemy z aplikacją
 
 # rejestracja blueprinta
 app.register_blueprint(user_bp)
 app.register_blueprint(entries_bp)
+app.register_blueprint(entersInRow_bp)
 
 @app.route('/')
 def index():

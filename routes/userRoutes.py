@@ -4,7 +4,13 @@ import queries as query_dispatchers
 import commands as command_dispatchers
 
 user_bp = Blueprint('user_bp', __name__)
-CORS(user_bp, origins="http://localhost:3000", supports_credentials=True)
+
+
+# CORS(user_bp, origins="*", supports_credentials=False)
+
+CORS(user_bp, origins="http://aivision.local:10623", supports_credentials=True)
+
+#CORS(user_bp, origins="http://localhost:3000", supports_credentials=True)
 
 @user_bp.route('/users', methods=['GET'])
 def get_users():

@@ -5,11 +5,10 @@ import queries as query_dispatchers
 import commands as command_dispatchers
 
 entries_bp = Blueprint('entries_bp', __name__)
-CORS(entries_bp, origins="http://localhost:3000", supports_credentials=True)
+CORS(entries_bp, origins="http://aivision.local:10623", supports_credentials=True)
 
 @entries_bp.route('/entries', methods=['GET'])
 def get_entries():
-    # pobieramy parametry paginacji z query string
     page = request.args.get('page', default=1, type=int)
     page_size = request.args.get('pagesize', default=20, type=int)
 
@@ -40,3 +39,9 @@ def add_entry():
     data = request.get_json()
     result = command_dispatchers.dispatchers('Create_entry', data)
     return jsonify(result), 200
+@entries_bp.route('/entries/<int:user_id>',methods=['GET'])
+def get_today_first_enter(user_id):
+    result = query_dispatchers.dispatchers('GetTodayFIrstEnter', user_id)
+    if not result:
+        abort(404)
+    return jsonify(result)

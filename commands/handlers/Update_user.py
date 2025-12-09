@@ -9,5 +9,7 @@ def handle(user_id, data):
         user.email = data['email']
     if 'password' in data and data['password']:
         user.set_password(data['password'])
+    if 'startWorkHour' in data:
+        user.startWorkHour = data['startWorkHour']
     db.session.commit()
     return user.to_dict()
