@@ -10,7 +10,10 @@ import sys
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 app = Flask(__name__)
-app.config.from_pyfile('config.py')
+# app.config.from_pyfile('config.py')
+app.config["SQLALCHEMY_DATABASE_URI"] = os.environ.get("SQLALCHEMY_DATABASE_URI")
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False
+
 
 CORS(app, resources={r"/*": {"origins": "http://aivision.local:11111"}}, supports_credentials=True)
 
